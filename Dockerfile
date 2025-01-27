@@ -6,7 +6,7 @@ LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ARG LIMESURVEY_VERSION
 
-ENV LIMESURVEY_VERSION=${LIMESURVEY_VESION:-"6.10.0+250106"} \
+ENV LIMESURVEY_VERSION=${LIMESURVEY_VESION:-"6.10.1+250120"} \
     PHP_ENABLE_CREATE_SAMPLE_PHP=FALSE \
     PHP_ENABLE_FILEINFO=TRUE \
     PHP_ENABLE_IMAP=TRUE \
@@ -28,9 +28,9 @@ RUN source /assets/functions/00-container && \
     mkdir -p "${NGINX_WEBROOT}" && \
     curl -SL https://github.com/LimeSurvey/LimeSurvey/archive/"${LIMESURVEY_VERSION}".tar.gz | tar xvfz - --strip 1 -C "${NGINX_WEBROOT}" && \
     rm -rf \
-           "${NGINX_WEBROOT}"/docs \
-           "${NGINX_WEBROOT}"/tests \
-           "${NGINX_WEBROOT}"/*.md && \
+    "${NGINX_WEBROOT}"/docs \
+    "${NGINX_WEBROOT}"/tests \
+    "${NGINX_WEBROOT}"/*.md && \
     package cleanup
 
 COPY install /

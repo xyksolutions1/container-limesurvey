@@ -4,6 +4,32 @@ source /assets/functions/00-container
 prepare_service
 PROCESS_NAME="limesurvey"
 
+
+cat <<EOF
+
+*********************************************************************************************
+*                                                                                           *
+*                    END OF LIFE NOTICE OCTOBER 7, 2025                                     *
+*                               tiredofit/limesurvey                                        *
+*                                                                                           *
+* This image is no longer maintained as of and will not receive updates.                    *
+*                                                                                           *
+* A successor image is available at:                                                        *
+*                                                                                           *
+* Repository | Documentation:                                                               *
+*   - https://github.com/nfrastack/container-limesurvey                                     *
+*                                                                                           *
+* Image Registries:                                                                         *
+*   - https://hub.docker.com/r/nfrastack/limesurvey                                         *
+*   - https://github.com/nfrastack/container-limesurvey/pkgs/container/container-limesurvey *
+*                                                                                           *
+* Please visit https://nfrastack.com for more information.                                  *
+*                                                                                           *
+*********************************************************************************************
+
+EOF
+
+sleep 15
 ### Sanity Test
 sanity_db
 sanity_var ADMIN_PASS "Admin Password"

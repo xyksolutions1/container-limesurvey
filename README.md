@@ -46,15 +46,21 @@ docker.io/nfrastack/limesurvey:(image_tag)
 
 Image tag syntax is:
 
-`<image>:<optional tag>-<optional phpversion>`
+`<image>:<branch>-<optional tag>-<optional phpversion>`
 
 Example:
 
 `docker.io/nfrastack/container-limesurvey:latest` or
 
-`ghcr.io/nfrastack/container-limesurvey:1.0-php84`
+`ghcr.io/nfrastack/container-limesurvey:6-1.0` or
+
+`ghcr.io/nfrastack/container-limesurvey:6-2.0-php84`
+
+
 
 * `latest` will be the most recent commit
+
+* `branch` will be the repositories branch, typically matching with the major version of LimeSurvey eg `6`
 
 * An optional `tag` may exist that matches the [CHANGELOG](CHANGELOG.md) - These are the safest
 

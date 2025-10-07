@@ -1,0 +1,71 @@
+#!/command/with-contenv bash
+# SPDX-FileCopyrightText: © 2025 Nfrastack <code@nfrastack.com>
+#
+# SPDX-License-Identifier: MIT
+
+source /container/base/functions/container/init
+prepare_service
+SERVICE_NAME="limesurvey"
+
+transform_var file \
+                    DB_CHARSET \
+                    DB_HOST \
+                    DB_NAME \
+                    DB_PASS \
+                    DB_PORT \
+                    DB_TABLE_PREFIX \
+                    DB_USER
+
+sanity_db
+
+if [ -f "${NGINX_WEBROOT}"/application/config/config.php ]; then
+    print_warn "[limesurvey] Skipping setup as config.php already exists"
+else
+    print_notice "[limesurvey] Generating Config Files"
+
+    if [ "${DB_TYPE,,}" = 'mysql' ]; then
+        db_ready mariadb
+        cp "${NGINX_WEBROOT}"/application/config/config-sample-mysql.php "${NGINX_WEBROOT}"/application/config/config.php
+    fi
+
+    sed -i \
+                -e "s#\('connectionString' => \).*,\$#\\1'${DB_TYPE}:host=${DB_HOST};port=${DB_PORT};dbname=${DB_NAME};',#g" \
+                -e "s#\('username' => \).*,\$#\\1'${DB_USER}',#g" \
+                -e "s#\('password' => \).*,\$#\\1'${DB_PASS}',#g" \
+                -e "s#\('charset' => \).*,\$#\\1'${DB_CHARSET}',#g" \
+                -e "s#\('tablePrefix' => \).*,\$#\\1'${DB_TABLE_PREFIX}',#g" \
+                -e "s#\('urlFormat' => \).*,\$#\\1'${URL_FORMAT}',#g" \
+            "${NGINX_WEBROOT}"/application/config/config.php
+
+    if [ -z "${PUBLIC_URL}" ]; then
+        sed -i "s#\('debug'=>0,\)\$#'publicurl'=>'${PUBLIC_URL}',\n\t\t\\1 #g" "${NGINX_WEBROOT}"/application/config/config.php
+    fi
+
+    if [ "${DEBUG,,}" = "true" ] ; then
+        sed -i "s#'debug'=>0#'debug'=>1#g" "${NGINX_WEBROOT}"/application/config/config.php
+    fi
+fi
+
+print_debug "Checking if database already provisioned"
+silent php "${NGINX_WEBROOT}"/application/commands/console.php updatedb
+
+if [ "${?}" -eq 0 ]; then
+    print_notice "Exiting LimeSurvey database detected, skipping installation routines"
+else
+    transform_var file \
+                        ADMIN_EMAIL \
+                        ADMIN_NAME \
+                        ADMIN_PASS \
+                        ADMIN_USER
+
+    print_info "Installing LimeSurvey $(grep -o "ADD: LimeSurvey .* |" /container/build/${IMAGE_NAME/\//_}/build.log | awk '{print $3}')"
+    sanity_var ADMIN_USER "Admin Username"
+    sanity_var ADMIN_NAME "Admin Name"
+    sanity_var ADMIN_EMAIL "Admin Email"
+    sanity_var ADMIN_PASS "Admin Password"
+    silent php "${NGINX_WEBROOT}"/application/commands/console.php install ${ADMIN_USER} ${ADMIN_PASS} ${ADMIN_NAME} ${ADMIN_EMAIL}
+fi
+
+custom_files "${CONTAINER_CUSTOM_PATH}" "${NGINX_WEBROOT}" "${NGINX_USER}" "${NGINX_GROUP}"
+
+liftoff

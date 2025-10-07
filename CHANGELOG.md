@@ -1,3 +1,9 @@
+## 6-1.7.0pre 2024-10-07 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Switched Base to nfrastack/nginx-php-fpm
+      - LimeSurvey 6.15.15+250929
+
 ## 6.1.6.99 2025-10-07 <dave at tiredofit dot ca>
 
 Add EOL notice and deprecate image
@@ -205,7 +211,6 @@ Add EOL notice and deprecate image
 
    ### Added
       - LimeSurvey 6.6.2+240827
-
 
 ## 6-1.6.40 2024-07-29 <dave at tiredofit dot ca>
 
@@ -613,7 +618,7 @@ First release of 6 branch
 
 ## 1.2.5 2019-11-04 <dave at tiredofit dot ca>
 
-* Bump to 3.19.2+191017 
+* Bump to 3.19.2+191017
 
 ## 1.2.4 2019-06-19 <dave at tiredofit dot ca>
 

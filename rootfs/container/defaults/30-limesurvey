@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: © 2025 Nfrastack <code@nfrastack.com>
+#
+# SPDX-License-Identifier: MIT
+
+ADMIN_EMAIL=${ADMIN_EMAIL:-"admin@example.com"}
+ADMIN_NAME=${ADMIN_NAME:-"admin"}
+ADMIN_USER=${ADMIN_USER:-"admin"}
+DB_PORT=${DB_PORT:-"3306"}
+DB_TABLE_PREFIX=${DB_TABLE_PREFIX:-"lime_"}
+PUBLIC_URL=${PUBLIC_URL:-}
+URL_FORMAT=${URL_FORMAT:-"path"}
+DB_CHARSET=${DB_CHARSET:-"utf8mb4"}

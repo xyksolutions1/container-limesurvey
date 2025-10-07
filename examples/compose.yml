@@ -1,22 +1,17 @@
 services:
 
   limesurvey-app:
-    image: tiredofit/limesurvey:6
+    image: docker.io/nfrastack/limesurvey:6
     container_name: limesurvey-app
     labels:
       - traefik.enable=true
-      - traefik.frontend.rule=Host:limesurvey.example.com
-      - traefik.port=80
-      - traefik.protocol=http
-      - traefik.docker.network=proxy
-      - traefik.backend=limesurvey-app
+      - traefik.http.routers.limesurvey.rule=Host(`limesurvey.example.com`)
+      - traefik.http.services.limesurvey.loadbalancer.server.port=80
     volumes:
       - ./data:/www/html/upload
-      - ./logs/:/www/logs
-      - ./assets/custom:/assets/custom
+      - ./logs/:/logs
     environment:
       - TIMEZONE=America/Vancouver
-      - CONTAINER_NAME=limesurvey-app
 
       - DB_HOST=limesurvey-db
       - DB_NAME=limesurvey
@@ -34,7 +29,7 @@ services:
 
   limesurvey-db:
     container_name: limesurvey-db
-    image: tiredofit/mariadb:10.11
+    image: docker.io/tiredofit/mariadb:10.11
     volumes:
       - ./db:/var/lib/mysql
     environment:
@@ -50,13 +45,12 @@ services:
 
   limesurvey-db-backup:
     container_name: limesurvey-db-backup
-    image: tiredofit/db-backup
-    links:
-     - limesurvey-db
+    image: docker.io/tiredofit/db-backup
+
     volumes:
       - ./dbbackup:/backup
     environment:
-      - TIMEZONE=America/Vancouver 
+      - TIMEZONE=America/Vancouver
       - CONTAINER_NAME=limesurvey-db-backup
 
       - DB01_HOST=limesurvey-db

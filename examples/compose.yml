@@ -29,7 +29,7 @@ services:
 
   limesurvey-db:
     container_name: limesurvey-db
-    image: docker.io/tiredofit/mariadb:10.11
+    image: docker.io/nfrastack/mariadb:11.8
     volumes:
       - ./db:/var/lib/mysql
     environment:

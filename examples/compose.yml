@@ -31,7 +31,7 @@ services:
     container_name: limesurvey-db
     image: docker.io/nfrastack/mariadb:11.8
     volumes:
-      - ./db:/var/lib/mysql
+      - ./db:/data
     environment:
       - TIMEZONE=America/Vancouver
       - CONTAINER_NAME/limesurvey-db

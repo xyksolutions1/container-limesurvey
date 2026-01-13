@@ -2,7 +2,7 @@
 
    ### Changed
       - Switched Base to nfrastack/nginx-php-fpm
-      - LimeSurvey 6.16.2+251209
+      - LimeSurvey 6.16.3+251215
 
 ## 6.1.6.99 2025-10-07 <dave at tiredofit dot ca>
 

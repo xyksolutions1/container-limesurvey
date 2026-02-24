@@ -34,7 +34,7 @@ services:
       - ./db:/data
     environment:
       - TIMEZONE=America/Vancouver
-      - CONTAINER_NAME/limesurvey-db
+
       - ROOT_PASS=password
       - DB_NAME=limesurvey
       - DB_USER=limesurvey
@@ -50,7 +50,6 @@ services:
       - ./dbbackup:/backup
     environment:
       - TIMEZONE=America/Vancouver
-      - CONTAINER_NAME=limesurvey-db-backup
 
       - DB01_HOST=limesurvey-db
       - DB01_TYPE=mariadb

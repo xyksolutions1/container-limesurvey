@@ -1,8 +1,9 @@
-## 6-1.7.0pre 2024-10-07 <dave at tiredofit dot ca>
+## 6-1.7.0 2026-02-24 <code at nfastack dot com>
 
-   ### Changed
+   ### Added
       - Switched Base to nfrastack/nginx-php-fpm
-      - LimeSurvey 6.16.8+260209
+      - LimeSurvey 6.16.9+260217
+
 
 ## 6.1.6.99 2025-10-07 <dave at tiredofit dot ca>
 

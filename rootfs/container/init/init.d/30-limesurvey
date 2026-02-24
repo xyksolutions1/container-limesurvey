@@ -1,5 +1,5 @@
 #!/command/with-contenv bash
-# SPDX-FileCopyrightText: © 2025 Nfrastack <code@nfrastack.com>
+# SPDX-FileCopyrightText: © 2026 Nfrastack <code@nfrastack.com>
 #
 # SPDX-License-Identifier: MIT
 
@@ -18,14 +18,14 @@ transform_var file \
 
 sanity_db
 
-if [ -f "${NGINX_WEBROOT}"/application/config/config.php ]; then
+if [ -f "${NGINX_WEBROOT%/}"/application/config/config.php ]; then
     print_warn "[limesurvey] Skipping setup as config.php already exists"
 else
     print_notice "[limesurvey] Generating Config Files"
 
     if [ "${DB_TYPE,,}" = 'mysql' ]; then
         db_ready mariadb
-        cp "${NGINX_WEBROOT}"/application/config/config-sample-mysql.php "${NGINX_WEBROOT}"/application/config/config.php
+        cp ${NGINX_WEBROOT%/}"/application/config/config-sample-mysql.php ${NGINX_WEBROOT%/}"/application/config/config.php
     fi
 
     sed -i \
@@ -35,19 +35,19 @@ else
                 -e "s#\('charset' => \).*,\$#\\1'${DB_CHARSET}',#g" \
                 -e "s#\('tablePrefix' => \).*,\$#\\1'${DB_TABLE_PREFIX}',#g" \
                 -e "s#\('urlFormat' => \).*,\$#\\1'${URL_FORMAT}',#g" \
-            "${NGINX_WEBROOT}"/application/config/config.php
+            "${NGINX_WEBROOT%/}"/application/config/config.php
 
     if [ -z "${PUBLIC_URL}" ]; then
-        sed -i "s#\('debug'=>0,\)\$#'publicurl'=>'${PUBLIC_URL}',\n\t\t\\1 #g" "${NGINX_WEBROOT}"/application/config/config.php
+        sed -i "s#\('debug'=>0,\)\$#'publicurl'=>'${PUBLIC_URL}',\n\t\t\\1 #g" ${NGINX_WEBROOT%/}/application/config/config.php
     fi
 
     if [ "${DEBUG,,}" = "true" ] ; then
-        sed -i "s#'debug'=>0#'debug'=>1#g" "${NGINX_WEBROOT}"/application/config/config.php
+        sed -i "s#'debug'=>0#'debug'=>1#g" ${NGINX_WEBROOT%/}/application/config/config.php
     fi
 fi
 
 print_debug "Checking if database already provisioned"
-silent php "${NGINX_WEBROOT}"/application/commands/console.php updatedb
+silent sudo -u "${NGINX_USER}" php "${NGINX_WEBROOT%/}"/application/commands/console.php updatedb
 
 if [ "${?}" -eq 0 ]; then
     print_notice "Exiting LimeSurvey database detected, skipping installation routines"
@@ -63,7 +63,7 @@ else
     sanity_var ADMIN_NAME "Admin Name"
     sanity_var ADMIN_EMAIL "Admin Email"
     sanity_var ADMIN_PASS "Admin Password"
-    silent php "${NGINX_WEBROOT}"/application/commands/console.php install ${ADMIN_USER} ${ADMIN_PASS} ${ADMIN_NAME} ${ADMIN_EMAIL}
+    silent sudo -u "${NGINX_USER}" php "${NGINX_WEBROOT%/}"/application/commands/console.php install ${ADMIN_USER} ${ADMIN_PASS} ${ADMIN_NAME} ${ADMIN_EMAIL}
 fi
 
 custom_files "${CONTAINER_CUSTOM_PATH}" "${NGINX_WEBROOT}" "${NGINX_USER}" "${NGINX_GROUP}"

@@ -1,3 +1,9 @@
+## 6-1.7.2 2026-03-16 <code at nfastack dot com>
+
+   ### Added
+      - LimeSurvey 6.16.12+260309
+
+
 ## 6-1.7.1 2026-03-09 <code at nfastack dot com>
 
    ### Added

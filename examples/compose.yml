@@ -45,7 +45,7 @@ services:
 
   limesurvey-db-backup:
     container_name: limesurvey-db-backup
-    image: docker.io/tiredofit/db-backup
+    image: docker.io/nfrastack/db-backup
     volumes:
       - ./dbbackup:/backup
     environment:

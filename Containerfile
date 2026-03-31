@@ -18,7 +18,7 @@ LABEL \
         org.opencontainers.image.licenses="MIT"
 
 ARG \
-    LIMESURVEY_VERSION="6.16.12+260309" \
+    LIMESURVEY_VERSION="6.16.14+260323" \
     LIMESURVEY_REPO_URL="https://github.com/LimeSurvey/LimeSurvey"
 
 COPY CHANGELOG.md /usr/src/container/CHANGELOG.md
@@ -26,13 +26,13 @@ COPY LICENSE /usr/src/container/LICENSE
 COPY README.md /usr/src/container/README.md
 
 ENV \
-    NGINX_WEBROOT="/www/limesurvey" \
     IMAGE_NAME="nfrastack/limesurvey" \
     IMAGE_REPO_URL="https://github.com/nfrastack/container-limesurvey/"
 
 RUN echo "" && \
     BUILD_ENV=" \
                 10-nginx/NGINX_SITE_ENABLED=limesurvey \
+                10-nginx/NGINX_SITE_LIMESURVEY_WEBROOT=/www/limesurvey \
                 20-php-fpm/PHP_ENABLE_CREATE_SAMPLE_PHP=FALSE \
                 20-php-fpm/PHP_MODULE_ENABLE_FILEINFO=TRUE \
                 20-php-fpm/PHP_MODULE_ENABLE_IMAP=TRUE \
@@ -52,12 +52,12 @@ RUN echo "" && \
     php-ext prepare && \
     php-ext reset && \
     php-ext enable core && \
-    mkdir -p "${NGINX_WEBROOT}" && \
-    curl -SL "${LIMESURVEY_REPO_URL}"/archive/"${LIMESURVEY_VERSION}".tar.gz | tar xvfz - --strip 1 -C "${NGINX_WEBROOT}" && \
+    mkdir -p "${NGINX_SITE_LIMESURVEY_WEBROOT}" && \
+    curl -sSL "${LIMESURVEY_REPO_URL}"/archive/"${LIMESURVEY_VERSION}".tar.gz | tar xfz - --strip 1 -C "${NGINX_SITE_LIMESURVEY_WEBROOT}" && \
     rm -rf \
-           "${NGINX_WEBROOT}"/docs \
-           "${NGINX_WEBROOT}"/tests \
-           "${NGINX_WEBROOT}"/*.md && \
+           "${NGINX_SITE_LIMESURVEY_WEBROOT}"/docs \
+           "${NGINX_SITE_LIMESURVEY_WEBROOT}"/tests \
+           "${NGINX_SITE_LIMESURVEY_WEBROOT}"/*.md && \
     container_build_log add "LimeSurvey" "${LIMESURVEY_VERSION}" "${LIMESURVEY_REPO_URL}" && \
     package cleanup
 

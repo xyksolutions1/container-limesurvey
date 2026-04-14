@@ -1,3 +1,9 @@
+## 6-1.7.4 2026-04-14 <code at nfastack dot com>
+
+   ### Added
+      - 6.16.16+260408
+
+
 ## 6-1.7.3 2026-04-09 <code at nfastack dot com>
 
    ### Added

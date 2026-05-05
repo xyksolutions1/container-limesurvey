@@ -5,16 +5,16 @@
 ARG \
     BASE_IMAGE
 
-FROM ${BASE_IMAGE}
+FROM docker.io/xyksolutions1/container-nginx-php-fpm:main
 
 LABEL \
         org.opencontainers.image.title="LimeSurvey" \
         org.opencontainers.image.description="Survey Platform" \
-        org.opencontainers.image.url="https://hub.docker.com/r/nfrastack/limesurvey" \
-        org.opencontainers.image.documentation="https://github.com/nfrastack/container-limesurvey/blob/main/README.md" \
-        org.opencontainers.image.source="https://github.com/nfrastack/container-limesurvey.git" \
-        org.opencontainers.image.authors="Nfrastack <code@nfrastack.com>" \
-        org.opencontainers.image.vendor="Nfrastack <https://www.nfrastack.com>" \
+        org.opencontainers.image.url="https://hub.docker.com/r/xyksolutions1/limesurvey" \
+        org.opencontainers.image.documentation="https://github.com/xyksolutions1/container-limesurvey/blob/main/README.md" \
+        org.opencontainers.image.source="https://github.com/xyksolutions1/container-limesurvey.git" \
+        org.opencontainers.image.authors="xyksolutions1" \
+        org.opencontainers.image.vendor="xyksolutions1" \
         org.opencontainers.image.licenses="MIT"
 
 ARG \
@@ -26,8 +26,8 @@ COPY LICENSE /usr/src/container/LICENSE
 COPY README.md /usr/src/container/README.md
 
 ENV \
-    IMAGE_NAME="nfrastack/limesurvey" \
-    IMAGE_REPO_URL="https://github.com/nfrastack/container-limesurvey/"
+    IMAGE_NAME="xyksolutions1/limesurvey" \
+    IMAGE_REPO_URL="https://github.com/xyksolutions1/container-limesurvey/"
 
 RUN echo "" && \
     BUILD_ENV=" \
